@@ -1,0 +1,68 @@
+Spring Embedding Animation Script Specification
+-----------------------------------------------
+
+This file describes a format for describing an spring embedding
+animation using simple script commands.
+
+Every command is one a single line. You can introduce/delete nodes, and add or remove 
+links between nodes.
+
+1.) Nodes
+
+A node is introduced by
+
+    add_node <name> <image-url>
+
+the name needs to be unique. The image is either a local file (file://) or a
+web address (http://). The python code will take care of downloading and converting
+the image.
+
+A node is deleted by 
+
+    rm_node <name> 
+
+.
+Deleting a node removes all the links this node had to other nodes, and also deletes
+the textures. Freeing up resources is a good thing, otherwise the animation will
+get slow after a while (and the graphic hardware's texture buffer might run out,
+too).
+
+2.) Links
+
+Adding a link between nodes is done by
+
+    add_link <name1> <name2>
+
+.
+You can also add parameters which influence the length and
+"bounciness" of the connection.
+
+    add_link <name1> <name2> <spring-constant> <length> <dampening>
+
+The defaults for these values are:
+    spring-constant=1.3
+    len=0.3
+    damp=0.3
+.
+
+For removing the link again, use
+    rm_link <name1> <name2>
+
+3.) Groups
+
+Groups are like nodes, only they have no texture. They're good for
+representing nodes that belong together (attach all nodes of a 
+group to a group node)
+
+    add_group <name>
+    rm_group <name>
+
+4.) Parameters
+
+Other attributes of the system can be controlled by the command
+    set name value
+.
+Parameters you can set are:
+
+friction: "Air resistance". Controls how fast moving nodes will loose speed (default: 1.7)
+
